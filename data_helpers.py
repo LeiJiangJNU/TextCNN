@@ -1,9 +1,9 @@
 import numpy as np
 import re
+import os
 from sklearn.preprocessing import LabelBinarizer
-import itertools
-from collections import Counter
-
+import tensorflow as tf
+from tensorflow.python.platform import gfile
 
 def clean_str(string):
     """
@@ -25,7 +25,6 @@ def clean_str(string):
     string = re.sub(r"\s{2,}", " ", string)
     return string.strip().lower()
 
-
 def load_data_and_labels(positive_data_file, negative_data_file):
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
@@ -45,6 +44,7 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     y = np.concatenate([positive_labels, negative_labels], 0)
     return [x_text, y]
 
+
 def load_data_labels(data_file, labels_file):
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
@@ -53,15 +53,21 @@ def load_data_labels(data_file, labels_file):
     # Load data from files
     data = list(open(data_file, "r", encoding='latin-1').readlines())
     data = [s.strip() for s in data]
-    labels = list(open(labels_file, "r").readlines())
-    lables = [s.strip() for s in labels]
     # Split by words
     x_text = [clean_str(sent) for sent in data]
+
+    labels = list(open(labels_file, "r").readlines())
+    lables = [s.strip() for s in labels]
     # Generate labels
     lables = [label.split(',')[1].strip() for label in lables]
     lb = LabelBinarizer()
     y = lb.fit_transform(lables)
-    return [x_text, y]
+
+    max_document_length = max([len(x.split(" ")) for x in x_text])
+    vocab_processor = tf.learn.preprocessing.VocabularyProcessor(max_document_length)
+    x = np.array(list(vocab_processor.fit_transform(x_text)))
+    return [x, y, len(vocab_processor.vocabulary_)]
+
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):
     """
@@ -69,7 +75,7 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
     """
     data = np.array(data)
     data_size = len(data)
-    num_batches_per_epoch = int((len(data)-1)/batch_size) + 1
+    num_batches_per_epoch = int((len(data) - 1) / batch_size) + 1
     for epoch in range(num_epochs):
         # Shuffle the data at each epoch
         if shuffle:
@@ -81,4 +87,3 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
             start_index = batch_num * batch_size
             end_index = min((batch_num + 1) * batch_size, data_size)
             yield shuffled_data[start_index:end_index]
-
