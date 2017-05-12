@@ -7,7 +7,6 @@ import time
 import datetime
 import data_helpers
 from text_cnn import TextCNN
-
 from tensorflow.contrib import learn
 # Parameters
 # ==================================================
@@ -49,7 +48,7 @@ print("")
 
 # Load data
 print("Loading data...")
-x, y, vocab_size= data_helpers.load_data_labels(FLAGS.data_file, FLAGS.label_file)
+x, y, vocab_processor = data_helpers.load_data_labels(FLAGS.data_file, FLAGS.label_file)
 
 # Randomly shuffle data
 np.random.seed(10)
@@ -62,7 +61,7 @@ y_shuffled = y[shuffle_indices]
 dev_sample_index = -1 * int(FLAGS.dev_sample_percentage * float(len(y)))
 x_train, x_dev = x_shuffled[:dev_sample_index], x_shuffled[dev_sample_index:]
 y_train, y_dev = y_shuffled[:dev_sample_index], y_shuffled[dev_sample_index:]
-print("Vocabulary Size: {:d}".format(vocab_size))
+print("Vocabulary Size: {:d}".format(len(vocab_processor.vocabulary_)))
 print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
 

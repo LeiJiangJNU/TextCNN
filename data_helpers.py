@@ -64,9 +64,9 @@ def load_data_labels(data_file, labels_file):
     y = lb.fit_transform(lables)
 
     max_document_length = max([len(x.split(" ")) for x in x_text])
-    vocab_processor = tf.learn.preprocessing.VocabularyProcessor(max_document_length)
+    vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(max_document_length)
     x = np.array(list(vocab_processor.fit_transform(x_text)))
-    return [x, y, len(vocab_processor.vocabulary_)]
+    return [x, y, vocab_processor]
 
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):
