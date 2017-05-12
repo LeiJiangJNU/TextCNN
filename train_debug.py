@@ -49,7 +49,7 @@ print("")
 
 # Load data
 print("Loading data...")
-x, y, vocab_size= data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file)
+x, y, vocab_size= data_helpers.load_data_labels(FLAGS.data_file, FLAGS.label_file)
 
 # Randomly shuffle data
 np.random.seed(10)
