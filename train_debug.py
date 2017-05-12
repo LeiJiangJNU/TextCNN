@@ -16,8 +16,8 @@ from tensorflow.contrib import learn
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
 tf.flags.DEFINE_string("positive_data_file", "./data/rt-polaritydata/rt-polarity.pos", "Data source for the positive data.")
 tf.flags.DEFINE_string("negative_data_file", "./data/rt-polaritydata/rt-polarity.neg", "Data source for the negative data.")
-tf.flags.DEFINE_string("data_file", "~/song_ws/data/data_by_ocean/eclipse/eclipse/textForLDA_final.csv", "Data source for the  data.")
-tf.flags.DEFINE_string("label_file", "~/song_ws/data/data_by_ocean/eclipse/eclipse/fixer.csv", "Data source for the labels data.")
+tf.flags.DEFINE_string("data_file", "~/song_ws/data/data_by_ocean/eclipse/textForLDA_final.csv", "Data source for the  data.")
+tf.flags.DEFINE_string("label_file", "~/song_ws/data/data_by_ocean/eclipse/fixer.csv", "Data source for the labels data.")
 
 # Model Hyperparameters
 tf.flags.DEFINE_integer("embedding_dim", 128, "Dimensionality of character embedding (default: 128)")
