@@ -66,7 +66,7 @@ def load_data_labels(data_file, labels_file):
     max_document_length = max([len(x.split(" ")) for x in x_text])
     vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(max_document_length)
     x = np.array(list(vocab_processor.fit_transform(x_text)))
-    return [x, y, vocab_processor]
+    return x, y, vocab_processor
 
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):
@@ -87,3 +87,6 @@ def batch_iter(data, batch_size, num_epochs, shuffle=True):
             start_index = batch_num * batch_size
             end_index = min((batch_num + 1) * batch_size, data_size)
             yield shuffled_data[start_index:end_index]
+
+if __name__ == "__main__":
+    x, y, vocab_processor = load_data_labels("../../data/data_by_ocean/eclipse/textForLDA_final.csv", "../../data/data_by_ocean/eclipse/fixer.csv")
