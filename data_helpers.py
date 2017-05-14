@@ -1,9 +1,7 @@
 import numpy as np
 import re
-import os
 from sklearn.preprocessing import LabelBinarizer
-import tensorflow as tf
-from tensorflow.python.platform import gfile
+from tensorflow.contrib import learn
 import pdb
 
 def clean_str(string):
@@ -67,7 +65,7 @@ def load_data_labels(data_file, labels_file):
     max_document_length = max([len(x.split(" ")) for x in x_text])
     print(max_document_length)
     pdb.set_trace()
-    vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(max_document_length)
+    vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
     x = np.array(list(vocab_processor.fit_transform(x_text)))
     return x, y, vocab_processor
 
