@@ -3,6 +3,7 @@ import re
 from sklearn.preprocessing import LabelBinarizer
 from tensorflow.contrib import learn
 import pdb
+import collections
 
 def clean_str(string):
     """
@@ -49,24 +50,23 @@ def load_data_labels(data_file, labels_file):
     Loads MR polarity data from files, splits the data into words and generates labels.
     Returns split sentences and labels.
     """
-    # Load data from files
-    data = list(open(data_file, "r", encoding='latin-1').readlines())
-    data = [s.strip() for s in data]
-    # Split by words
-    x_text = [clean_str(sent) for sent in data]
+    data = []
+    labels = []
+    with open(data_file, 'r', encoding='latin-1') as f:
+        data.extend([s.strip() for s in f.readlines()])
+        data = [clean_str(s) for s in data]
 
-    labels = list(open(labels_file, "r").readlines())
-    lables = [s.strip() for s in labels]
-    # Generate labels
-    lables = [label.split(',')[1].strip() for label in lables]
+    with open(labels_file, 'r') as f:
+        labels.extend([s.strip() for s in f.readlines()])
+        lables = [label.split(',')[1].strip() for label in labels]
+
     lb = LabelBinarizer()
     y = lb.fit_transform(lables)
 
-    max_document_length = max([len(x.split(" ")) for x in x_text])
-    print(max_document_length)
-    pdb.set_trace()
-    vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
-    x = np.array(list(vocab_processor.fit_transform(x_text)))
+    # max_document_length = max([len(x.split(" ")) for x in data])
+    # print(max_document_length)
+    vocab_processor = learn.preprocessing.VocabularyProcessor(1000)
+    x = np.array(list(vocab_processor.fit_transform(data)))
     return x, y, vocab_processor
 
 
