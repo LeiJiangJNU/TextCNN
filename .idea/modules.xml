@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/TextCNN.iml" filepath="$PROJECT_DIR$/.idea/TextCNN.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../TextRNN/.idea/TextRNN.iml" filepath="$PROJECT_DIR$/../TextRNN/.idea/TextRNN.iml" />
     </modules>
   </component>
 </project>
